@@ -21,7 +21,6 @@ var Translapu = (function () {
       return;
     }
     console.info('selection: ' + currentSelection);
-    console.info('wcy: ');
     return create(currentSelection, e.clientX, e.clientY);
   }
 
@@ -98,20 +97,23 @@ var Translapu = (function () {
     init: function () {
       addCssLinkToHead();
       console.log($(document.body));
-      $(document.body).bind('onmousedown', function (e) {
-        console.log('onmousedown');
+      $(document.body).bind('mousedown', function (e) {
         clearPreviousPanel();
       });
 
-      var trans = function (e) {
-        console.log('onselect');
+      var translate = function (e) {
+        console.log(e);
+        clearPreviousPanel();
         trans(getSelected(e))
       };
 
+      //不能连续双击
       $(document.body).bind({
-        'onselect': trans,
-        'ondblclick': trans
+        'dblclick': translate
       });
+
+      //select不太好使
+      $('*').bind('select', translate);
     }
   }
 });
